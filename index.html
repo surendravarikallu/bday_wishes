@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Lakshmi! 🎂</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- AOS (Animate On Scroll) Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        /* ============================================
+           RESET AND BASE STYLES
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffeef7 0%, #ffdbec 25%, #ffe7f0 50%, #fff0f5 75%, #ffeef7 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            overflow-x: hidden;
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        /* Custom cursor removed to fix dual cursor issue */
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* ============================================
+           SCROLL PROGRESS BAR
+           ============================================ */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b9d, #ff9ec2, #ffb6c1);
+            z-index: 9998;
+            transition: width 0.1s ease;
+            box-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+        }
+        
+        /* ============================================
+           MUSIC TOGGLE BUTTON
+           ============================================ */
+        .music-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 5px 20px rgba(255, 182, 193, 0.4);
+            cursor: pointer;
+            font-size: 24px;
+            z-index: 9997;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .music-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(255, 182, 193, 0.6);
+        }
+        
+        .music-toggle.playing {
+            background: linear-gradient(135deg, #ff6b9d, #ff9ec2);
+            color: white;
+        }
+        
+        /* ============================================
+           CONTAINER LAYOUT
+           ============================================ */
+        .main-container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        /* ============================================
+           CARD STYLES WITH ENHANCED EFFECTS
+           ============================================ */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(255, 182, 193, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+        
+        /* Enhanced hover animation */
+        .card:hover {
+            transform: translateY(-10px) scale(1.02) rotate(1deg);
+            box-shadow: 0 20px 60px rgba(255, 182, 193, 0.5),
+                        0 0 40px rgba(255, 107, 157, 0.3),
+                        inset 0 0 20px rgba(255, 182, 193, 0.2);
+            background: rgba(255, 255, 255, 1);
+            border: 2px solid rgba(255, 182, 193, 0.6);
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% {
+            box-shadow: 0 20px 60px rgba(255, 182, 193, 0.5),
+                        0 0 40px rgba(255, 107, 157, 0.3);
+            }
+            50% {
+            box-shadow: 0 20px 60px rgba(255, 182, 193, 0.7),
+                        0 0 60px rgba(255, 107, 157, 0.5);
+            }
+        }
+        
+        /* Removed shimmer effect to fix pink strip issue */
+        
+        /* Click ripple effect */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 182, 193, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+            pointer-events: none;
+        }
+        
+        .card.ripple::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* ============================================
+           HEADER CARD
+           ============================================ */
+        .header-card {
+            text-align: center;
+        }
+        
+        .main-heading {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(2.5rem, 7vw, 4.5rem);
+            color: #ff6b9d;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            color: #d4547f;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        /* Header card text hover effects */
+        .card:hover .main-heading {
+            transform: scale(1.05);
+            text-shadow: 3px 3px 8px rgba(255, 182, 193, 0.5);
+        }
+        
+        .card:hover .subtitle {
+            transform: scale(1.05);
+            color: #ff6b9d;
+        }
+        
+        /* ============================================
+           MESSAGE CARDS
+           ============================================ */
+        .message-card {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: #8b4a6b;
+            line-height: 1.8;
+            text-align: center;
+            font-weight: 400;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        /* Text animation on card hover */
+        .card:hover .message-card {
+            color: #ff6b9d;
+            transform: scale(1.03);
+        }
+        
+        /* AOS will handle card animations */
+        
+        /* ============================================
+           FOOTER CARD
+           ============================================ */
+        .footer-card {
+            text-align: center;
+            border-top: 3px solid rgba(255, 182, 193, 0.3);
+            padding-top: 2rem;
+        }
+        
+        .footer-text {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: #c489a0;
+            font-weight: 500;
+        }
+        
+        /* ============================================
+           FLOATING HEARTS BACKGROUND
+           ============================================ */
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(255, 182, 193, 0.3);
+            animation: float 25s infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        
+        /* ============================================
+           IMPROVED SPARKLE EFFECTS ON CLICK
+           ============================================ */
+        @keyframes sparkleFly {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0.5) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--sparkle-x), var(--sparkle-y)) scale(1.2) rotate(360deg);
+            }
+        }
+        
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            font-size: var(--sparkle-size);
+            animation: sparkleFly var(--sparkle-duration) ease-out forwards;
+            z-index: 9999;
+            filter: drop-shadow(0 0 5px rgba(255, 182, 193, 0.8));
+        }
+        
+        /* ============================================
+           MOBILE RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0;
+            }
+            
+            .card {
+                padding: 2rem 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .main-container {
+                padding: 0 0.5rem;
+            }
+            
+            .music-toggle {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 20px;
+            }
+            
+            /* Custom cursor removed */
+        }
+    </style>
+</head>
+<body>
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+    
+    <!-- Custom Cursor removed -->
+    
+    <!-- Music Toggle Button -->
+    <button class="music-toggle" id="musicToggle" title="Toggle Birthday Music">
+        🎵
+    </button>
+    
+    <!-- Floating hearts background -->
+    <div class="hearts" id="hearts"></div>
+    
+    <!-- Main content container -->
+    <div class="main-container">
+        <!-- Header Card -->
+        <div class="card header-card" data-aos="fade-down" data-aos-duration="1000">
+            <h1 class="main-heading">
+                🎂 Happy Birthday Lakshmi 💖
+            </h1>
+            <p class="subtitle">
+                Wishing you endless smiles, joy, and laughter, Vyshu!
+            </p>
+        </div>
+        
+        <!-- Card 1 -->
+        <div class="card message-card" data-aos="fade-right" data-aos-duration="800">
+            You make every moment brighter, Lucky ✨
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="card message-card" data-aos="fade-left" data-aos-duration="800">
+            May your year be filled with laughter, love, and sweet surprises 🎁
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="card message-card" data-aos="flip-left" data-aos-duration="800">
+            Keep shining with that positive energy that lights up everyone's day 🌸
+        </div>
+        
+        <!-- Card 4 -->
+        <div class="card message-card" data-aos="fade-up" data-aos-duration="800">
+            Here's to a day as amazing as you are, Lakshmi 💫
+        </div>
+        
+        <!-- Card 5 -->
+        <div class="card message-card" data-aos="zoom-in" data-aos-duration="800">
+            Never stop smiling — it's your best magic power 💕
+        </div>
+        
+        <!-- Footer Card -->
+        <div class="card footer-card" data-aos="fade-up" data-aos-duration="800">
+            <p class="footer-text">
+                Made with 💖 by your friend, Surendra
+            </p>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <!-- AOS Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- GSAP Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        /* ============================================
+           INITIALIZE AOS
+           ============================================ */
+        AOS.init({
+            once: true,
+            offset: 100,
+            duration: 800,
+            easing: 'ease-in-out-cubic'
+        });
+        
+        // Ensure AOS refreshes properly
+        window.addEventListener('load', () => {
+            AOS.refresh();
+        });
+        
+        /* ============================================
+           INITIALIZE GSAP
+           ============================================ */
+        gsap.registerPlugin(ScrollTrigger);
+        
+        /* Parallax effect for background */
+        gsap.to('.hearts', {
+            scrollTrigger: {
+                trigger: 'body',
+                start: 'top top',
+                scrub: true
+            },
+            y: -100,
+            ease: 'none'
+        });
+        
+        /* Custom cursor effect removed */
+        
+        /* ============================================
+           SCROLL PROGRESS BAR
+           ============================================ */
+        const scrollProgress = document.getElementById('scrollProgress');
+        
+        window.addEventListener('scroll', () => {
+            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            scrollProgress.style.width = scrolled + '%';
+        });
+        
+        /* ============================================
+           MUSIC TOGGLE FUNCTIONALITY
+           ============================================ */
+        const musicToggle = document.getElementById('musicToggle');
+        let audio = null;
+        
+        // Create audio element with birthday music
+        function initAudio() {
+            // IMPORTANT: Add your birthday song file
+            // Step 1: Download a birthday song (MP3 file)
+            // Step 2: Save it as 'birthday-song.mp3' in the same folder as this HTML file
+            // Step 3: The code below will automatically load it
+            
+            audio = new Audio('birthday-song.mp3');
+            audio.loop = true;
+            audio.volume = 0.5;
+            
+            audio.addEventListener('error', () => {
+                console.log('Music file not found. Please add birthday-song.mp3 file.');
+                musicToggle.textContent = '⚠️';
+            });
+        }
+        
+        musicToggle.addEventListener('click', async () => {
+            if (!audio) {
+                initAudio();
+            }
+            
+            if (audio.paused) {
+                try {
+                    await audio.play();
+                    musicToggle.classList.add('playing');
+                } catch (error) {
+                    console.log('Could not play music:', error);
+                    alert('Could not play music. Please add "birthday-song.mp3" file in the same folder.');
+                }
+            } else {
+                audio.pause();
+                musicToggle.classList.remove('playing');
+            }
+        });
+        
+        /* ============================================
+           CLICK INTERACTIONS
+           ============================================ */
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Ripple effect
+                card.classList.add('ripple');
+                setTimeout(() => card.classList.remove('ripple'), 600);
+                
+                // Create improved sparkle particles
+                const emojis = ['✨', '💖', '⭐', '💕', '🎉', '🎊', '🌸', '💫', '🦋', '🌙'];
+                const particleCount = 15;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    
+                    // Random angle and distance for each particle
+                    const angle = (Math.PI * 2 * i) / particleCount;
+                    const distance = 150 + Math.random() * 100;
+                    const x = Math.cos(angle) * distance;
+                    const y = Math.sin(angle) * distance;
+                    
+                    // Set CSS variables for animation
+                    sparkle.style.setProperty('--sparkle-x', x + 'px');
+                    sparkle.style.setProperty('--sparkle-y', y + 'px');
+                    sparkle.style.setProperty('--sparkle-size', (15 + Math.random() * 15) + 'px');
+                    sparkle.style.setProperty('--sparkle-duration', (0.8 + Math.random() * 0.4) + 's');
+                    
+                    // Set initial position
+                    sparkle.style.left = e.clientX + 'px';
+                    sparkle.style.top = e.clientY + 'px';
+                    
+                    document.body.appendChild(sparkle);
+                    
+                    setTimeout(() => sparkle.remove(), 2000);
+                }
+            });
+        });
+        
+        /* AOS handles all card animations */
+        
+        /* ============================================
+           FLOATING HEARTS BACKGROUND - INCREASED
+           ============================================ */
+        function createHeart() {
+            const hearts = document.getElementById('hearts');
+            const heartEmojis = ['💖', '💕', '🩷', '💝', '💗', '🩵', '💓', '💞', '💟', '❣️'];
+            
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 20 + 25) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            hearts.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 50000);
+        }
+        
+        function createFloatingHearts() {
+            // Create initial hearts immediately
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => createHeart(), i * 200);
+            }
+            
+            // Continue creating hearts every second
+            setInterval(() => {
+                createHeart();
+            }, 1000);
+        }
+        
+        createFloatingHearts();
+        
+        /* ============================================
+           EASTER EGG: KEYSTROKE SEQUENCE + MOBILE TAP
+           ============================================ */
+        let konamiCode = [];
+        const targetSequence = ['l', 'a', 'k', 's', 'h', 'm', 'i'];
+        let tapCount = 0;
+        let tapTimer = null;
+        
+        // Desktop: Keyboard sequence
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.key.toLowerCase());
+            if (konamiCode.length > targetSequence.length) {
+                konamiCode.shift();
+            }
+            
+            if (konamiCode.join('') === targetSequence.join('')) {
+                createEasterEggBurst();
+            }
+        });
+        
+        // Mobile: Tap the header 7 times quickly
+        const headerCard = document.querySelector('.header-card');
+        if (headerCard) {
+            headerCard.addEventListener('click', () => {
+                tapCount++;
+                
+                // Show tap feedback
+                if (tapCount < 7) {
+                    const feedback = document.createElement('div');
+                    feedback.textContent = `${tapCount}/7`;
+                    feedback.style.position = 'fixed';
+                    feedback.style.top = '20px';
+                    feedback.style.right = '20px';
+                    feedback.style.background = 'rgba(255, 107, 157, 0.9)';
+                    feedback.style.color = 'white';
+                    feedback.style.padding = '10px 15px';
+                    feedback.style.borderRadius = '20px';
+                    feedback.style.fontSize = '1.2rem';
+                    feedback.style.fontWeight = 'bold';
+                    feedback.style.zIndex = '10000';
+                    feedback.style.pointerEvents = 'none';
+                    document.body.appendChild(feedback);
+                    
+                    setTimeout(() => feedback.remove(), 1000);
+                }
+                
+                // Reset tap count after 2 seconds of no taps
+                clearTimeout(tapTimer);
+                tapTimer = setTimeout(() => {
+                    tapCount = 0;
+                }, 2000);
+                
+                // Trigger Easter egg after 7 taps
+                if (tapCount >= 7) {
+                    createEasterEggBurst();
+                    tapCount = 0; // Reset counter
+                }
+            });
+        }
+        
+        // Mobile: Long press on any card (3 seconds)
+        let longPressTimer = null;
+        let isLongPressing = false;
+        
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('touchstart', (e) => {
+                isLongPressing = true;
+                longPressTimer = setTimeout(() => {
+                    if (isLongPressing) {
+                        createEasterEggBurst();
+                    }
+                }, 3000);
+            });
+            
+            card.addEventListener('touchend', () => {
+                isLongPressing = false;
+                clearTimeout(longPressTimer);
+            });
+            
+            card.addEventListener('touchmove', () => {
+                isLongPressing = false;
+                clearTimeout(longPressTimer);
+            });
+        });
+        
+        /* ============================================
+           EASTER EGG BURST EFFECT
+           ============================================ */
+        function createEasterEggBurst() {
+            // Optimized: Reduce elements for better performance
+            createOptimizedFlowerRain();
+            
+            // Reduced burst effects for smoother animation
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight;
+                    createHeartBurst(x, y);
+                }, i * 150);
+            }
+            
+            // Create floating text animation with better visibility
+            const celebrationText = document.createElement('div');
+            celebrationText.innerHTML = '🎉 Happy Birthday Lakshmi! 🎉';
+            celebrationText.style.position = 'fixed';
+            celebrationText.style.top = '50%';
+            celebrationText.style.left = '50%';
+            celebrationText.style.transform = 'translate(-50%, -50%)';
+            celebrationText.style.fontSize = '4rem';
+            celebrationText.style.fontFamily = 'Great Vibes, cursive';
+            celebrationText.style.color = '#ffffff';
+            celebrationText.style.textShadow = '4px 4px 12px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 107, 157, 0.9)';
+            celebrationText.style.zIndex = '10000';
+            celebrationText.style.pointerEvents = 'none';
+            celebrationText.style.opacity = '0';
+            celebrationText.style.textAlign = 'center';
+            celebrationText.style.background = 'linear-gradient(135deg, rgba(255, 107, 157, 0.9), rgba(255, 182, 193, 0.9))';
+            celebrationText.style.padding = '20px 40px';
+            celebrationText.style.borderRadius = '20px';
+            celebrationText.style.border = '3px solid rgba(255, 255, 255, 0.8)';
+            celebrationText.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.3)';
+            
+            document.body.appendChild(celebrationText);
+            
+            // Optimized text animation with smoother closing
+            gsap.to(celebrationText, {
+                opacity: 1,
+                scale: 1.2,
+                duration: 0.4,
+                ease: 'power2.out'
+            });
+            
+            // Smoother closing animation
+            gsap.to(celebrationText, {
+                opacity: 0,
+                scale: 1.1, // Reduced scale change for smoother animation
+                y: -50, // Reduced movement for smoother animation
+                duration: 0.8, // Faster closing
+                delay: 2,
+                ease: 'power1.out', // Simpler easing for smoother performance
+                onComplete: () => celebrationText.remove()
+            });
+        }
+        
+        function createOptimizedFlowerRain() {
+            const flowers = ['🌸', '🌺', '🌻', '🌷', '🌼', '🌹', '💐', '🌿'];
+            const hearts = ['💖', '💕', '💗', '🩷', '💝', '💓', '💞', '💟'];
+            const allEmojis = [...flowers, ...hearts];
+            
+            // Optimized: Fewer elements, longer intervals for smoother performance
+            const rainInterval = setInterval(() => {
+                for (let i = 0; i < 3; i++) { // Reduced from 5 to 3
+                    const emoji = document.createElement('div');
+                    emoji.textContent = allEmojis[Math.floor(Math.random() * allEmojis.length)];
+                    emoji.style.position = 'fixed';
+                    emoji.style.left = Math.random() * window.innerWidth + 'px';
+                    emoji.style.top = '-50px';
+                    emoji.style.fontSize = (Math.random() * 15 + 25) + 'px'; // Slightly larger, less variation
+                    emoji.style.zIndex = '9999';
+                    emoji.style.pointerEvents = 'none';
+                    emoji.style.opacity = '0.9';
+                    emoji.style.willChange = 'transform'; // Optimize for animations
+                    
+                    document.body.appendChild(emoji);
+                    
+                    // Optimized animation with simpler easing
+                    gsap.to(emoji, {
+                        y: window.innerHeight + 100,
+                        rotation: 180, // Reduced rotation for smoother animation
+                        duration: Math.random() * 2 + 2.5, // Shorter duration range
+                        ease: 'power1.out', // Simpler easing
+                        onComplete: () => emoji.remove()
+                    });
+                }
+            }, 300); // Increased interval from 200ms to 300ms
+            
+            // Stop rain after 2.5 seconds (reduced duration)
+            setTimeout(() => {
+                clearInterval(rainInterval);
+            }, 2500);
+        }
+        
+        /* ============================================
+           TYPING EFFECT ON LOAD
+           ============================================ */
+        window.addEventListener('load', () => {
+            const header = document.querySelector('.main-heading');
+            gsap.from(header, {
+                duration: 1.5,
+                text: '',
+                ease: 'none',
+                delay: 0.5
+            });
+        });
+    </script>
+</body>
+</html>
